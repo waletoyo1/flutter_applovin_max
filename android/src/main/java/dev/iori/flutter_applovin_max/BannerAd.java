@@ -14,25 +14,27 @@ public class BannerAd extends Activity
 {
     private MaxAdView adView;
 
-    void createBannerAd
+    void createBannerAd()
     {
         adView = new MaxAdView( "YOUR_AD_UNIT_ID", this );
         adView.setListener( this );
-    
+        
         // Stretch to the width of the screen for banners to be fully functional
         int width = ViewGroup.LayoutParams.MATCH_PARENT;
-    
-        // Banner height on phones and tablets is 50 and 90, respectively
-        int heightPx = getResources().getDimensionPixelSize( R.dimen.banner_height );
-    
+        
+        // Get the adaptive banner height.
+        int heightDp = MaxAdFormat.BANNER.getAdaptiveSize( this ).getHeight();
+        int heightPx = AppLovinSdkUtils.dpToPx( this, heightDp );
+        
         adView.setLayoutParams( new FrameLayout.LayoutParams( width, heightPx ) );
-    
+        adView.setExtraParameter( "adaptive_banner", "true" );
+        
         // Set background or background color for banners to be fully functional
         adView.setBackgroundColor( R.color.background_color );
-    
+        
         ViewGroup rootView = findViewById( android.R.id.content );
         rootView.addView( adView );
-    
+        
         // Load the ad
         adView.loadAd();
     }
